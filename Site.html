@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Quiz de correspondance</title>
+<style>
+body { font-family: Arial; background: #f4f4f4; padding: 20px; margin: 0; }
+.container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+h1,h2,h3{text-align:center;}
+.question{margin-bottom:20px;}
+button{padding:10px 20px;font-size:16px;cursor:pointer;border:none;border-radius:5px;background:#4CAF50;color:white;}
+button:hover{background:#45a049;}
+.result{margin-top:20px;font-size:18px;font-weight:bold;text-align:center;}
+ul{padding-left:20px;max-height:200px;overflow-y:auto;}
+ul li{margin-bottom:5px;word-break:break-word;}
+.admin-btn{margin-left:5px;background:#c00;color:white;border:none;padding:2px 5px;border-radius:3px;cursor:pointer;}
+#destroyedScreen{display:none;text-align:center;margin-top:100px;font-size:28px;font-weight:bold;}
+#reactivateBtn{margin-top:20px;background:#4CAF50;color:white;padding:10px 20px;font-size:16px;border-radius:5px;border:none;cursor:pointer;}
+#reactivateBtn:hover{background:#45a049;}
+#votes{margin-top:10px;display:none;text-align:center;}
+#voteMessage{font-weight:bold;margin-bottom:5px;text-align:center;}
+#prevention{background:#ffebcc;padding:10px;border-radius:5px;margin-bottom:20px;text-align:center;font-weight:bold;}
+</style>
+</head>
+<body>
+
+<div id="destroyedScreen">
+  🚫 Ce site a été désactivé
+  <br>
+  <button id="reactivateBtn">🔄 Réactiver le site</button>
+</div>
+
+<div class="container" id="site">
+
+<h1>Quel profil te correspond ?</h1>
+
+<div id="prevention">
+⚠️ Attention : Ce quiz est à but ludique. Les résultats sont indicatifs.
+</div>
+
+<div class="question">
+  <p>Ton pseudo :</p>
+  <input type="text" id="pseudo" placeholder="Entre ton pseudo">
+</div>
+
+<!-- 10 questions -->
+<div class="question">
+  <p>1. Que préfères-tu faire le week-end ?</p>
+  <label><input type="radio" name="q1" value="a"> Sortir avec des amis</label><br>
+  <label><input type="radio" name="q1" value="b"> Rester tranquille chez toi</label><br>
+  <label><input type="radio" name="q1" value="c"> Faire du sport</label>
+</div>
+<div class="question">
+  <p>2. Ton caractère est plutôt :</p>
+  <label><input type="radio" name="q2" value="a"> Extraverti</label><br>
+  <label><input type="radio" name="q2" value="b"> Calme</label><br>
+  <label><input type="radio" name="q2" value="c"> Déterminé</label>
+</div>
+<div class="question">
+  <p>3. Ta matière préférée ?</p>
+  <label><input type="radio" name="q3" value="a"> Arts / langues</label><br>
+  <label><input type="radio" name="q3" value="b"> Informatique</label><br>
+  <label><input type="radio" name="q3" value="c"> Sport / SVT</label>
+</div>
+<div class="question">
+  <p>4. Préfères-tu les films :</p>
+  <label><input type="radio" name="q4" value="a"> Comédie / romance</label><br>
+  <label><input type="radio" name="q4" value="b"> Science-fiction / documentaires</label><br>
+  <label><input type="radio" name="q4" value="c"> Action / aventure</label>
+</div>
+<div class="question">
+  <p>5. Ton activité idéale :</p>
+  <label><input type="radio" name="q5" value="a"> Sortir et rencontrer du monde</label><br>
+  <label><input type="radio" name="q5" value="b"> Jouer à des jeux vidéo</label><br>
+  <label><input type="radio" name="q5" value="c"> Faire du sport / courir</label>
+</div>
+<div class="question">
+  <p>6. Ton animal préféré :</p>
+  <label><input type="radio" name="q6" value="a"> Chat</label><br>
+  <label><input type="radio" name="q6" value="b"> Loutre</label><br>
+  <label><input type="radio" name="q6" value="c"> Chien</label>
+</div>
+<div class="question">
+  <p>7. Préfères-tu :</p>
+  <label><input type="radio" name="q7" value="a"> Lire un livre</label><br>
+  <label><input type="radio" name="q7" value="b"> Programmer</label><br>
+  <label><input type="radio" name="q7" value="c"> Faire du sport en extérieur</label>
+</div>
+<div class="question">
+  <p>8. Ta boisson préférée :</p>
+  <label><input type="radio" name="q8" value="a"> Café ou thé social</label><br>
+  <label><input type="radio" name="q8" value="b"> Smoothie / boisson saine</label><br>
+  <label><input type="radio" name="q8" value="c"> Eau / boisson sportive</label>
+</div>
+<div class="question">
+  <p>9. Ton type de musique :</p>
+  <label><input type="radio" name="q9" value="a"> Pop / festive</label><br>
+  <label><input type="radio" name="q9" value="b"> Electro / Techno</label><br>
+  <label><input type="radio" name="q9" value="c"> Rock / Rap sportif</label>
+</div>
+<div class="question">
+  <p>10. Ton rêve :</p>
+  <label><input type="radio" name="q10" value="a"> Voyager et rencontrer des gens</label><br>
+  <label><input type="radio" name="q10" value="b"> Créer un projet informatique</label><br>
+  <label><input type="radio" name="q10" value="c"> Participer à des compétitions sportives</label>
+</div>
+
+<button onclick="calculerResultat()">Voir le résultat</button>
+
+<div id="result" class="result"></div>
+
+<div id="voteMessage" style="display:none;">Merci d'avoir voté !</div>
+<div id="votes" style="display:none;">
+  <button id="likeBtn">👍 0</button>
+  <button id="dislikeBtn">👎 0</button>
+</div>
+
+<h2>Leaderboard</h2>
+<button id="deleteAllBtn" style="display:none; margin-bottom:10px;" onclick="resetLeaderboard()">🧹 Supprimer tout le leaderboard</button>
+<button onclick="resetVotes()" style="display:none;" id="resetVotesBtn">🔄 Réinitialiser tous les votes</button>
+<ul id="liste"></ul>
+
+<div id="adminPanel" style="display:none; margin-top:20px; border:2px solid #c00; padding:10px; border-radius:8px;">
+  <h3>🔐 Mode Admin</h3>
+  <button style="background:black" onclick="detruireSite()">💥 Détruire le site</button>
+  <br><br>
+  <input type="text" id="deletePseudo" placeholder="Pseudo à supprimer">
+  <button onclick="supprimerParticipant()">Supprimer ce participant</button>
+</div>
+
+<script>
+// --- Variables globales ---
+const ADMIN_CODE='admin123';
+const site=document.getElementById('site');
+const destroyedScreen=document.getElementById('destroyedScreen');
+const reactivateBtn=document.getElementById('reactivateBtn');
+const adminPanel=document.getElementById('adminPanel');
+const deleteAllBtn=document.getElementById('deleteAllBtn');
+const resetVotesBtn=document.getElementById('resetVotesBtn');
+const liste=document.getElementById('liste');
+const votesDiv=document.getElementById('votes');
+const voteMessage=document.getElementById('voteMessage');
+const likeBtn=document.getElementById('likeBtn');
+const dislikeBtn=document.getElementById('dislikeBtn');
+
+let data=JSON.parse(localStorage.getItem('resultats'))||[];
+let votes=JSON.parse(localStorage.getItem('votes'))||{}; // votes par pseudo
+let canVote=false;
+let hasVoted=false;
+
+// --- Vérifier si site détruit ---
+if(localStorage.getItem('siteDetruit')==='true'){
+  site.style.display='none';
+  destroyedScreen.style.display='block';
+}
+
+// --- Leaderboard ---
+function afficherListe(){
+  liste.innerHTML='';
+  data.forEach((item,index)=>{
+    const li=document.createElement('li');
+    let voteInfo=votes[item.pseudo]?` (👍 ${votes[item.pseudo].like} / 👎 ${votes[item.pseudo].dislike})`:'';
+    li.textContent=item.pseudo+' → '+item.texte+voteInfo;
+    
+    if(adminPanel.style.display==='block'){
+      const btn=document.createElement('button');
+      btn.textContent='❌';
+      btn.className='admin-btn';
+      btn.onclick=()=>{
+        data.splice(index,1);
+        delete votes[item.pseudo];
+        localStorage.setItem('resultats',JSON.stringify(data));
+        localStorage.setItem('votes',JSON.stringify(votes));
+        afficherListe();
+      };
+      li.appendChild(btn);
+    }
+    liste.appendChild(li);
+  });
+  deleteAllBtn.style.display=adminPanel.style.display==='block'?'block':'none';
+  resetVotesBtn.style.display=adminPanel.style.display==='block'?'inline-block':'none';
+}
+afficherListe();
+
+// --- Votes ---
+function updateVoteButtons(){
+  const pseudo=document.getElementById('pseudo').value.trim();
+  const userVote=votes[pseudo]||{like:0,dislike:0};
+  likeBtn.textContent=`👍 ${userVote.like}`;
+  dislikeBtn.textContent=`👎 ${userVote.dislike}`;
+}
+updateVoteButtons();
+
+likeBtn.addEventListener('click', ()=>{
+  if(!canVote) return alert("Tu dois d'abord voir ton résultat !");
+  if(hasVoted) return alert("Tu as déjà voté !");
+  
+  const pseudo=document.getElementById('pseudo').value.trim();
+  if(!votes[pseudo]) votes[pseudo]={like:0,dislike:0};
+  votes[pseudo].like++;
+  localStorage.setItem('votes',JSON.stringify(votes));
+  updateVoteButtons();
+  voteMessage.style.display='block';
+  hasVoted=true;
+  likeBtn.disabled=true;
+  dislikeBtn.disabled=true;
+  afficherListe();
+});
+
+dislikeBtn.addEventListener('click', ()=>{
+  if(!canVote) return alert("Tu dois d'abord voir ton résultat !");
+  if(hasVoted) return alert("Tu as déjà voté !");
+  
+  const pseudo=document.getElementById('pseudo').value.trim();
+  if(!votes[pseudo]) votes[pseudo]={like:0,dislike:0};
+  votes[pseudo].dislike++;
+  localStorage.setItem('votes',JSON.stringify(votes));
+  updateVoteButtons();
+  voteMessage.style.display='block';
+  hasVoted=true;
+  likeBtn.disabled=true;
+  dislikeBtn.disabled=true;
+  afficherListe();
+});
+
+// --- Quiz ---
+const motsInterdits=['hitler','négro','negro','connard','juif'];
+function contientMotInterdit(texte){
+  return motsInterdits.some(mot=>texte.toLowerCase().includes(mot));
+}
+
+function calculerResultat(){
+  const pseudo=document.getElementById('pseudo').value.trim();
+  if(!pseudo){ alert("Entre un pseudo"); return; }
+
+  if(pseudo.toLowerCase()===ADMIN_CODE){
+    adminPanel.style.display='block';
+    afficherListe();
+    alert("Mode admin activé");
+    return;
+  }
+
+  if(contientMotInterdit(pseudo)){
+    alert("Ce pseudo contient un mot interdit");
+    return;
+  }
+
+  const questions=['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10'];
+  let scores={a:0,b:0,c:0};
+  for(let q of questions){
+    const r=document.querySelector('input[name="'+q+'"]:checked');
+    if(!r){ alert("Réponds à toutes les questions"); return; }
+    scores[r.value]++;
+  }
+
+  let profil='a';
+  if(scores.b>scores[profil]) profil='b';
+  if(scores.c>scores[profil]) profil='c';
+  const texte=profil==='a'?'Profil Social 😄':profil==='b'?'Profil Geek 🤓':'Profil Sportif 💪';
+
+  data.push({pseudo,texte});
+  localStorage.setItem('resultats',JSON.stringify(data));
+  afficherListe();
+  document.getElementById('result').textContent=pseudo+' : '+texte;
+
+  // Autoriser vote et afficher votes
+  votesDiv.style.display='block';
+  voteMessage.style.display='none';
+  canVote=true;
+  hasVoted=false;
+  likeBtn.disabled=false;
+  dislikeBtn.disabled=false;
+}
+
+// --- Admin ---
+function resetLeaderboard(){
+  if(!confirm('Supprimer tout le leaderboard ?')) return;
+  data=[];
+  votes={};
+  localStorage.removeItem('resultats');
+  localStorage.removeItem('votes');
+  afficherListe();
+  updateVoteButtons();
+}
+
+function resetVotes(){
+  if(!confirm('Réinitialiser tous les votes ?')) return;
+  votes={};
+  localStorage.setItem('votes',JSON.stringify(votes));
+  afficherListe();
+  updateVoteButtons();
+}
+
+function supprimerParticipant(){
+  const p=document.getElementById('deletePseudo').value.trim();
+  if(!p) return;
+  data=data.filter(item=>item.pseudo!==p);
+  delete votes[p];
+  localStorage.setItem('resultats',JSON.stringify(data));
+  localStorage.setItem('votes',JSON.stringify(votes));
+  afficherListe();
+}
+
+function detruireSite(){
+  if(!confirm("⚠️ Le site va disparaître visuellement")) return;
+  localStorage.clear();
+  localStorage.setItem('siteDetruit','true');
+  site.style.display='none';
+  destroyedScreen.style.display='block';
+}
+
+// --- Réactiver site ---
+reactivateBtn.addEventListener('click', ()=>{
+  localStorage.removeItem('siteDetruit');
+  site.style.display='block';
+  destroyedScreen.style.display='none';
+});
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
